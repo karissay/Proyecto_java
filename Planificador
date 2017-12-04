@@ -1,0 +1,450 @@
+package proyecto;
+
+import LeerArchivos.LeerCurso;
+import LeerArchivos.LeerEstudiante;
+import LeerArchivos.LeerProfesor;
+import java.util.Collections;
+import java.util.Comparator;
+import objetos.Curso;
+import objetos.Profesor;
+import objetos.Estudiante;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+/**
+ * @author Ariana Ochoa
+ * @author Karina Sailema
+ * @author Aldair Soledispa
+ * la clase planificador es para registrar estudiantes,profesores,materias
+ */
+public class Planificador {
+    //variables 
+    private boolean band;
+    private Scanner op;
+    private int opcion=0;
+    private int acum;
+    private String var;
+    //cargamos los profesores
+    private Profesor profesor;
+    private LeerProfesor  leerProfe;
+    private LinkedList<Profesor> profe;
+    //cargamos los estudiantes
+    private Estudiante estudiante;
+    private LeerEstudiante  leerEst;
+    private LinkedList<Estudiante> alumno;
+    //cargamos los cursos
+    private Curso curso;
+    private LeerCurso  leerCurso;
+    private LinkedList<Curso> cursos;
+      /**
+     * Crea un curso el profesor 
+     */
+    public Curso crearCurso() {
+        band=true;
+        Curso curso =new Curso();
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**           Escoga Materia             **");
+        System.out.println("**  1.Pociones                          **");
+        System.out.println("**  2.Defensa contra las artes oscuras  **");
+        System.out.println("**  3.Adivinación                       **");
+        System.out.println("**  4.Astronomía                        **");
+        System.out.println("**  5.Historia de la Magia              **");
+        System.out.println("**  6.Herbología                        **");
+        System.out.println("**  7.Encantamientos                    **");
+        System.out.println("**  8.Vuelo                             **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        
+        
+        while(band){
+           System.out.print("    Escoga Una Materia: ");
+            op = new Scanner(System.in);
+            opcion=op.nextInt();
+            if(opcion>=9){
+               System.out.println("ERROR: Escoga una opción correcta\n");
+            }else{
+              band=false;
+            }
+        }
+        if(opcion==1){
+            curso.setMateria("Pociones");
+        }else if(opcion==2){
+            curso.setMateria("Defensa contra las artes oscuras");
+        }else if(opcion==3){
+            curso.setMateria("Adivinacion");
+        }else if(opcion==4){
+            curso.setMateria("Astronomia");
+        }else if(opcion==5){
+            curso.setMateria("Historia de la Magia");
+        }else if(opcion==6){
+            curso.setMateria("Herbologia");
+        }else if(opcion==7){
+            curso.setMateria("Encantamientos");
+        }else {
+            curso.setMateria("Vuelo");
+        }
+        //leemos el archivo cursos.txt para ver si la materia ya esta registrada
+        leerCurso=new LeerCurso();
+        cursos=leerCurso.cargarCurso();
+         for (Curso obj : cursos) {
+                 if(obj.materia.equals(curso.materia)){
+                     System.out.println("La materia ya tiene un curso registrado\n");
+                     return null;
+                 }
+            }
+       
+        leerProfe = new LeerProfesor();
+        profe=leerProfe.cargarProfesor();
+        
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**           Escoga Profesor            **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        acum=1;
+         //recorre los profesores 
+        for (Profesor obj : profe) {
+                 System.out.println(acum+"."+obj.nombre+" "+obj.apellido);
+                 acum+=1;
+            }
+         band=true;
+         while(band){
+                System.out.print("\nEscoga Un Profesor: ");
+                op = new Scanner(System.in);
+                opcion=op.nextInt();
+                if(opcion>=acum){
+                   System.out.println("ERROR: Escoga una opción correcta\n");
+                }else{
+                  band=false;
+                }
+            }
+        
+        acum=1;
+        for (Profesor obj : profe) {
+                 if(acum==opcion){
+                     curso.setNamProfesor(obj.nombre);
+                    curso.setApelProfesor(obj.apellido);
+                 }
+                 acum+=1;
+            }
+        System.out.print("\nIngrese la capacidad del curso para "+curso.getMateria()+" : ");
+        op = new Scanner(System.in);
+        opcion=op.nextInt();
+        curso.setCapacidad(opcion);
+        System.out.print("\nIngrese el dia: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        curso.setDia(var);
+        System.out.print("\nIngrese el Horario del curso: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        curso.setHorario(var);
+        System.out.print("¿Desea Guardar Curso? S/N: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        if(var.equals("S")|var.equals("si")|var.equals("s")){
+            return curso;
+        }else{
+           return null; 
+        }
+       
+    }
+      /**
+     * 
+     * POdemos Crear un estudiante
+     */
+    public Estudiante crearEstudiante() {
+        band=true;
+        estudiante =new Estudiante();
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**           Crear Estudiante           **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        System.out.print("Ingrese nombre: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        estudiante.setNombre(var);
+        System.out.print("\nIngrese apellido: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        estudiante.setApellido(var);;
+        System.out.print("\nIngrese edad: ");
+        op = new Scanner(System.in);
+        opcion=op.nextInt();
+        estudiante.setEdad(opcion);
+        System.out.print("\nVarita: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        estudiante.setVarita(var);;
+        System.out.print("\nCasa: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        estudiante.setCasa(var);;
+        
+        System.out.println("\n************************************");
+        System.out.println("**                                **");
+        System.out.println("**      Tipos de Mago/Bruja       **");
+        System.out.println("**  1.Animago                     **");
+        System.out.println("**  2.Metamorfomago               **");
+        System.out.println("**  3.Estandar                    **");
+        System.out.println("**                                **");
+        System.out.println("************************************\n");
+        
+        while(band){
+           System.out.print("    Eliga el tipo de mago/bruja que es: ");
+            op = new Scanner(System.in);
+            opcion=op.nextInt();
+            if(opcion>=4){
+               System.out.println("ERROR: Escoga una opción correcta\n");
+            }else{
+              band=false;
+            }
+        }
+        
+        if(opcion==1){
+            estudiante.setTipo("Animago");
+        }else if(opcion==2){
+            estudiante.setTipo("Metamorfomago");
+        }else {
+            estudiante.setTipo("Estandar");
+        }
+            
+        System.out.print("¿Desea Guardar  Estudiante? S/N: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        if(var.equals("S")|var.equals("si")|var.equals("s")){
+           return estudiante;
+        }else{
+           return null; 
+        }
+        
+    }
+      /**
+     * 
+     * Creamos un profesor
+     */
+    public Profesor crearProfesor() {
+        band=true;
+        profesor =new Profesor();
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**           Crear Profesor             **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        System.out.print("Ingrese Nombre: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        profesor.setNombre(var);
+        System.out.print("\nIngrese Apellido: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        profesor.setApellido(var);;
+        System.out.print("\nIngrese Edad: ");
+        op = new Scanner(System.in);
+        opcion=op.nextInt();
+        profesor.setEdad(opcion);
+        System.out.print("\nVarita: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        profesor.setVarita(var);;
+        System.out.print("\nFecha de Ingreso: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        profesor.setFechaIngreso(var);;
+        
+        System.out.println("\n************************************");
+        System.out.println("**                                **");
+        System.out.println("**      Tipos de Mago/Bruja       **");
+        System.out.println("**  1.Animago                     **");
+        System.out.println("**  2.Metamorfomago               **");
+        System.out.println("**  3.Estandar                    **");
+        System.out.println("**                                **");
+        System.out.println("************************************\n");
+                
+         while(band){
+           System.out.print("    Eliga el tipo de mago/bruja que es: ");
+            op = new Scanner(System.in);
+            opcion=op.nextInt();
+            if(opcion>=4){
+               System.out.println("ERROR: Escoga una opción correcta\n");
+            }else{
+              band=false;
+            }
+        }
+        if(opcion==1){
+            profesor.setTipo("Animago");
+            System.out.print("¿En que clase de animal puede convertirse?: ");
+            op = new Scanner(System.in);
+            var=op.nextLine();
+            profesor.setAnimal(var);;
+        }else if(opcion==2){
+            profesor.setTipo("Metamorfomago");
+            System.out.print("¿Que pocion usa para controlarse?: ");
+            op = new Scanner(System.in);
+            var=op.nextLine();
+            profesor.setPocion(var);
+        }else {
+            profesor.setTipo("Estandar");
+            System.out.print("¿Que deporte realiza?: ");
+            op = new Scanner(System.in);
+            var=op.nextLine();
+            profesor.setDeporte(var);
+        }
+        
+        System.out.print("¿Desea Guardar  Profesor? S/N: ");
+        op = new Scanner(System.in);
+        var=op.nextLine();
+        if(var.equals("S")|var.equals("si")|var.equals("s")){
+            return profesor;
+        }else{
+           return null; 
+        }
+        
+    }
+      /**
+     * 
+     * Muestra el horario de una materia
+     */
+    public void  horario() {
+        band=true;
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**           Escoga Materia             **");
+        System.out.println("**  1.Pociones                          **");
+        System.out.println("**  2.Defensa contra las artes oscuras  **");
+        System.out.println("**  3.Adivinación                       **");
+        System.out.println("**  4.Astronomía                        **");
+        System.out.println("**  5.Historia de la Magia              **");
+        System.out.println("**  6.Herbología                        **");
+        System.out.println("**  7.Encantamientos                    **");
+        System.out.println("**  8.Vuelo                             **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        
+         while(band){
+           System.out.print("    Escoga Una Materia: ");
+            op = new Scanner(System.in);
+            opcion=op.nextInt();
+            if(opcion>=9){
+               System.out.println("ERROR: Escoga una opción correcta\n");
+            }else{
+              band=false;
+            }
+        }
+        if(opcion==1){
+            var="Pociones";
+        }else if(opcion==2){
+             var="Defensa contra las artes oscuras";
+        }else if(opcion==3){
+             var="Adivinacion";
+        }else if(opcion==4){
+             var="Astronomia";
+        }else if(opcion==5){
+             var="Historia de la Magia";
+        }else if(opcion==6){
+             var="Herbologia";
+        }else if(opcion==7){
+             var="Encantamientos";
+        }else {
+             var="Vuelo";
+        }
+         leerCurso=new LeerCurso();
+         cursos=leerCurso.cargarCurso();
+         for (Curso obj : cursos) {
+                 if(obj.materia.equals(var)){
+                     System.out.println("\nMATERIA: " + obj.materia);
+                     System.out.println("PROFESOR: " + obj.namProfesor + " " + obj.apelProfesor );
+                     System.out.println("HORARIO: " +obj.dia + ", " +obj.horario);
+                     System.out.println("REGISTRADOS: " +obj.registrados);
+                 }
+            }
+
+    }
+      /**
+     * 
+     * muestra el listado de estudiantes con un determinado orden 
+     */
+    public void  listado() {
+        
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**      Listado de Estudiantes          **");
+        System.out.println("**  1.Edad                              **");
+        System.out.println("**  2.Nombre                            **");
+        System.out.println("**  3.Número de materias registradas    **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        band=true;
+         while(band){
+           System.out.print("    Eliga el criterio para ordenar: ");
+            op = new Scanner(System.in);
+            opcion=op.nextInt();
+            if(opcion>=4){
+               System.out.println("ERROR: Escoga una opción correcta\n");
+            }else{
+              band=false;
+            }
+        }
+            leerEst=new LeerEstudiante();
+            alumno=leerEst.cargarEstudiante();
+            System.out.println("\n");
+          switch(opcion){
+              case 1:
+                  Collections.sort(alumno, new Comparator<Estudiante>() {
+                        @Override
+                        public int compare(Estudiante t, Estudiante t1) {
+                            if((t.edad -t1.edad)==0){
+                                return t.apellido.compareTo(t1.apellido);
+                            }else{
+                              return t.edad -t1.edad;  
+                            }
+                            
+                        }
+                    });
+                  System.out.println(alumno);
+                  for (Estudiante obj : alumno) {
+                      System.out.println(obj.nombre + " "+obj.apellido+ "   **  "+obj.edad+  "   **  "+obj.casa+  "   **  "+obj.materias);
+                    }
+                  break;
+              case 2:
+                Collections.sort(alumno, new Comparator<Estudiante>() {
+                        @Override
+                        public int compare(Estudiante t, Estudiante t1) {
+                            
+                             if((t.nombre.compareTo(t1.nombre))==0){
+                                return t.apellido.compareTo(t1.apellido);
+                            }else{
+                               return t.nombre.compareTo(t1.nombre); 
+                            }
+
+                        }
+                        
+                    });
+                for (Estudiante obj : alumno) {
+                      System.out.println(obj.nombre + " "+obj.apellido+ "   **  "+obj.edad+  "   **  "+obj.casa+  "   **  "+obj.materias);
+                    }
+                  break;
+              case 3:
+                  Collections.sort(alumno, new Comparator<Estudiante>() {
+                        @Override
+                        public int compare(Estudiante t, Estudiante t1) {
+                             if((t.materias -t1.materias)==0){
+                                return t.nombre.compareTo(t1.nombre);
+                            }else{
+                              return t.materias -t1.materias;  
+                            }
+                        }
+                    });
+                  for (Estudiante obj : alumno) {
+                      System.out.println(obj.nombre + " "+obj.apellido+ "   **  "+obj.edad+  "   **  "+obj.casa+  "   **  "+obj.materias);
+                    }
+                  break;
+            }
+        
+
+    }
+
+
+}
