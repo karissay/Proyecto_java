@@ -1,0 +1,243 @@
+package proyecto;
+
+import LeerArchivos.LeerCurso;
+import LeerArchivos.LeerEstudiante;
+import LeerArchivos.LeerProfesor;
+import LeerArchivos.LeerRegistro;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.Scanner;
+import objetos.Curso;
+import objetos.Estudiante;
+import objetos.Profesor;
+import objetos.Registro;
+import objetos.vuelo;
+
+/**
+ * @author Ariana Ochoa
+ * @author Karina Sailema
+ * @author Aldair Soledispa
+ * la clase Alumno implementa la interface vuelo 
+ */
+public class Alumno implements vuelo{
+    //variables 
+    private boolean band;
+    private Scanner op;
+    private int opcion=0;
+    private int acum;
+    private String var,var1;
+    private int edadMin;//edad minima para escoger una materia
+    private int edad;//edad de un estudiante
+    
+    //cargamos los registros 
+    private LeerRegistro  leerReg;
+    private Registro registro;
+    //cargamos los cursos
+    private Curso curso;
+    private LeerCurso  leerCurso;
+    private LinkedList<Curso> cursos;
+    //cargamos los estudiantes 
+    private Estudiante estudiante;
+    private LeerEstudiante  leerEst;
+    private LinkedList<Estudiante> alumno;
+      /**
+     * 
+     * Muestra la planificacion de una Materia
+     */
+    public void  planificacion() {
+        band=true;
+        //menu
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**           Escoga Materia             **");
+        System.out.println("**  1.Pociones                          **");
+        System.out.println("**  2.Defensa contra las artes oscuras  **");
+        System.out.println("**  3.Adivinación                       **");
+        System.out.println("**  4.Astronomía                        **");
+        System.out.println("**  5.Historia de la Magia              **");
+        System.out.println("**  6.Herbología                        **");
+        System.out.println("**  7.Encantamientos                    **");
+        System.out.println("**  8.Vuelo                             **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        //la opcion no es correcta
+         while(band){
+           System.out.print("    Escoga Una Materia: ");
+            op = new Scanner(System.in);
+            opcion=op.nextInt();
+            if(opcion>=9){
+               System.out.println("ERROR: Escoga una opción correcta\n");
+            }else{
+              band=false;
+            }
+        }
+         //asignamos la materia escogida a una variable
+        if(opcion==1){
+            var="Pociones";
+        }else if(opcion==2){
+             var="Defensa contra las artes oscuras";
+        }else if(opcion==3){
+             var="Adivinacion";
+        }else if(opcion==4){
+             var="Astronomia";
+        }else if(opcion==5){
+             var="Historia de la Magia";
+        }else if(opcion==6){
+             var="Herbologia";
+        }else if(opcion==7){
+             var="Encantamientos";
+        }else {
+             var="Vuelo";
+        }
+         leerCurso=new LeerCurso();
+         cursos=leerCurso.cargarCurso();
+         //recorremos los cursos, si el curso ingresado es igual a un curso registrado nos muestra el curso 
+         for (Curso obj : cursos) {
+                 if(obj.materia.equals(var)){
+                     System.out.println("\nMATERIA: " + obj.materia);
+                     System.out.println("PROFESOR: " + obj.namProfesor + " " + obj.apelProfesor );
+                     System.out.println("HORARIO: " +obj.dia + ", " +obj.horario);
+                 }
+            }
+
+    }
+     /**
+     * 
+     * Podemos registrarnos a un curso planificado por un profesor
+     */
+     public void  registro() {
+        band=true;
+        System.out.println("\n******************************************");
+        System.out.println("**                                      **");
+        System.out.println("**           Escoga Materia             **");
+        System.out.println("**  1.Pociones                          **");
+        System.out.println("**  2.Defensa contra las artes oscuras  **");
+        System.out.println("**  3.Adivinación                       **");
+        System.out.println("**  4.Astronomía                        **");
+        System.out.println("**  5.Historia de la Magia              **");
+        System.out.println("**  6.Herbología                        **");
+        System.out.println("**  7.Encantamientos                    **");
+        System.out.println("**  8.Vuelo                             **");
+        System.out.println("**                                      **");
+        System.out.println("******************************************\n");
+        
+         while(band){
+           System.out.print("    Escoga Una Materia para Registrar: ");
+            op = new Scanner(System.in);
+            opcion=op.nextInt();
+            if(opcion>=9){
+               System.out.println("ERROR: Escoga una opción correcta\n");
+            }else{
+              band=false;
+            }
+        }
+        if(opcion==1){
+            var="Pociones";
+            edad=15;
+        }else if(opcion==2){
+             var="Defensa contra las artes oscuras";
+             edad=15;
+        }else if(opcion==3){
+            edad=16;
+             var="Adivinacion";
+        }else if(opcion==4){
+            edad=12;
+             var="Astronomia";
+        }else if(opcion==5){
+            edad=10;
+             var="Historia de la Magia";
+        }else if(opcion==6){
+            edad=13;
+             var="Herbologia";
+        }else if(opcion==7){
+            edad=18;
+             var="Encantamientos";
+        }else {
+            edad=18;
+             var="Vuelo";
+        }
+            //cargamos los cursos y registros 
+         leerCurso=new LeerCurso();
+         registro=new Registro();
+         cursos=leerCurso.cargarCurso();
+         leerEst=new LeerEstudiante();
+         alumno=leerEst.cargarEstudiante();
+         leerReg=new LeerRegistro();
+         //recorremos los cursos para ver el horario planificado para un determinado curso
+         for (Curso obj : cursos) {
+                 if(obj.materia.equals(var)){
+                     System.out.println("El horoario de "+ var +" es "+obj.dia + ", " +obj.horario);
+                     //guardamos el curso en una variable 
+                     curso=obj;
+                 }
+         }
+         //recorremos estudiante  para ver la edad 
+         for (Estudiante obj : alumno) {
+                if(obj.nombre.equals(Proyecto.c1.nombre)){
+                    edad=obj.edad;
+                    //guardamos el estudiante en una variable
+                    estudiante=obj;
+                }
+         }
+         System.out.print("\n¿Desea Registrase? S/N: ");
+        op = new Scanner(System.in);
+        var1=op.nextLine();
+        //fecha actual
+        Calendar fecha = Calendar.getInstance();
+        int año = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH) + 1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        //guardamos un registro, editamos estudiante y curso
+        if(var1.equals("S")|var1.equals("si")|var1.equals("s")){
+            registro.setMateria(var);
+            registro.setApellido(Proyecto.c1.apellido);
+            registro.setNombre(Proyecto.c1.nombre);
+            // si la edad del estudiante es menor a la minima del curso
+            //SE registra con matricula extraordinaria 
+            if(edad<=edadMin){
+                registro.setTipo("E");
+            }else{
+                registro.setTipo("N");
+            }
+            registro.setFecha(dia+"/"+mes+"/"+año);
+            //guardamos registro 
+            leerReg.guardarRegistro(registro);
+            System.out.println("Se ha registrado en la materia");
+            //aumentamos las materias registradas de curso y estudiante
+            leerCurso.editarCurso(curso);
+            leerEst.editarEstudiante(estudiante);
+             
+        }
+         
+
+    }
+     // Tipo de mago 
+     public String tipo() {
+         leerEst=new LeerEstudiante();
+         alumno=leerEst.cargarEstudiante();
+         for (Estudiante obj : alumno) {
+                if(obj.nombre.equals(Proyecto.c1.nombre)){
+                    return obj.tipo;
+                }
+         }
+         return "";
+    }
+     // metodos de la interface vuelo
+    @Override
+    public void despegar(String tipo) {
+        
+    }
+    //muestra el vuelo de un determinado mago
+    @Override
+    public void volar(String tipo) {
+        if(tipo=="animago"){
+            System.out.println("Usted es un Animago, para volar necesita su varita");
+        }else if(tipo=="metamorfomago"){
+            System.out.println("Usted es un metamorfomago, Ustede puede volaro con su poder");
+        }else{
+            System.out.println("Usted es un Animago, para volar necesita su escoba de modelo Nimbus 2000");
+        }
+    }
+    
+    
+}
