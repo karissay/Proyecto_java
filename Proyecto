@@ -1,0 +1,141 @@
+
+package proyecto;
+
+import LeerArchivos.LeerCuenta;
+import LeerArchivos.LeerCurso;
+import LeerArchivos.LeerEstudiante;
+import LeerArchivos.LeerProfesor;
+import objetos.Curso;
+import objetos.Profesor;
+import objetos.Cuenta;
+import objetos.Estudiante;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+/**
+ * @author Ariana Ochoa
+ * @author Karina Sailema
+ * @author Aldair Soledispa
+ * la clase principal del programa
+ */
+public class Proyecto {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static Cuenta c1;
+    public static void main(String[] args) {
+       LeerCuenta usuario = new LeerCuenta();
+       Planificador profesor = new Planificador();
+       Alumno alumno = new Alumno();
+       
+       boolean band,band1=true;
+       int opcion = 0;
+       Curso curso;
+       LeerCurso leerCurso = new LeerCurso();
+       LeerProfesor leerProfe = new LeerProfesor();
+       LeerEstudiante leerEstu = new LeerEstudiante();
+       
+       Scanner scan = new Scanner(System.in);
+        System.out.println("\n****************************");
+        System.out.println("**                        **");
+        System.out.println("**        HOGWARTS        **");
+        System.out.println("**       BIENVENIDOS      **");
+        System.out.println("**                        **");
+        System.out.println("****************************");
+         c1=usuario.leerCuenta();
+        while (band1){
+            
+            if(c1.rol.equals("planificador")){
+                System.out.println("\n1. Crear Curso");
+                System.out.println("2. Crear Profesor");
+                System.out.println("3. Crear Estudiante");
+                System.out.println("4. Ver Horarios Planificados");
+                System.out.println("5. Listado de estudiantes");
+                System.out.println("6. Salir\n");
+                band=true;
+                while(band){
+                   System.out.print("Escoga una opción: ");
+                    Scanner op = new Scanner(System.in);
+                     opcion=op.nextInt();
+                    if(opcion>=7){
+                       System.out.println("ERROR: Escoga una opción correcta\n");
+                    }else{
+                      band=false;
+                    }   
+                }
+                switch(opcion){
+                  case 1:
+                      curso=profesor.crearCurso();
+                      if(curso==null){
+                          System.out.println("No ha guardado el curso");
+                      }else{
+                          leerCurso.guardarCurso(curso);
+                      }
+
+                      break;
+                  case 2:
+                     Profesor profes=profesor.crearProfesor();
+                       if(profes==null){
+                          System.out.println("No ha guardado el profesor");
+                      }else{
+                         leerProfe.guardarProfesor(profes);
+                      }
+
+
+                      break;
+                  case 3:
+                      Estudiante estudiante=profesor.crearEstudiante();
+                       if(estudiante==null){
+                          System.out.println("No ha guardado el Estudiante");
+                      }else{
+                         leerEstu.guardarEstudiante(estudiante);
+                      }
+                      break;
+                  case 4:
+                      profesor.horario();
+                      break;
+                  case 5:
+                      profesor.listado();
+                        break;
+                  case 6:
+                      band1=false;
+                    break;
+                }
+            }else  {
+                System.out.println("\n1. Ver Cursos Planificados");
+                System.out.println("2. Registro");
+                System.out.println("3. Descripción de vuelo");
+                System.out.println("4. Salir\n");
+                band=true;
+                while(band){
+                   System.out.print("Escoga una opción: ");
+                    Scanner op = new Scanner(System.in);
+                     opcion=op.nextInt();
+                    if(opcion>=5){
+                       System.out.println("ERROR: Escoga una opción correcta\n");
+                    }else{
+                      band=false;
+                    }   
+                }
+                
+                switch(opcion){
+                  case 1:
+                      alumno.planificacion();
+                      break;
+                  case 2:
+                     alumno.registro();
+                      break;
+                  case 3:
+                      
+                     alumno.volar(alumno.tipo());
+                      break;
+                  case 4:
+                      band1=false;
+                    break;
+                }
+            }
+        }
+    }
+
+}
